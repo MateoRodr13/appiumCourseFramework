@@ -10,6 +10,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class FormPage extends AndroidActions {
 
     AndroidDriver driver;
@@ -28,6 +30,12 @@ public class FormPage extends AndroidActions {
 
     @AndroidFindBy(id="com.androidsample.generalstore:id/btnLetsShop")
     private WebElement shopButton;
+
+    @AndroidFindBy(xpath="//android.widget.Toast[1]")
+    private WebElement toastMessageError;
+
+    @AndroidFindBy(xpath="//android.widget.Toast[1]")
+    private List<WebElement> toastMessageErrorList;
 
     public FormPage(AndroidDriver driver){
         super(driver);
@@ -63,5 +71,21 @@ public class FormPage extends AndroidActions {
     public ProductCatalog pressShopButton(){
         shopButton.click();
         return new ProductCatalog(driver);
+    }
+
+    public String getToastMessageError(){
+        String toastMessageErrorString = toastMessageError.getAttribute("text");
+        return toastMessageErrorString;
+    }
+
+    public int getToastDisplayed(){
+        int countToast = toastMessageErrorList.size();
+        return countToast;
+    }
+
+    public void  fillForm(String country, String name, String gender){
+        countrySelection(country);
+        setNameField(name);
+        setGender(gender);
     }
 }

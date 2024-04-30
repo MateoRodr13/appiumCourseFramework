@@ -30,15 +30,17 @@ public class eCommerce_tc_3 extends AndroidBaseTest {
     public Object[][] getData() throws IOException {
         List<HashMap<String, String>> data = getJsonData(System.getProperty("user.dir") + "\\src\\test\\java\\org\\mateoRodriguez\\testData\\eCommerce.json");
         //return new Object[][]{{"Mateo Rodriguez", "Male", "Colombia"}, {"Lina", "Female", "Argentina"}};
-        return new Object[][]{{data.get(0)}, {data.get(1)}};
+        Object[][] dataArray = new Object[data.size()][1];
+        for (int i = 0; i < data.size(); i++) {
+            dataArray[i][0] = data.get(i);
+        }
+        return dataArray;
     }
 
     @Test(dataProvider = "getData", groups = {"Smoke"})
     public void FillForm(HashMap<String, String> input) throws InterruptedException {
 
-        formPage.setNameField(input.get("name"));
-        formPage.setGender(input.get("gender"));
-        formPage.countrySelection(input.get("country"));
+        formPage.fillForm(input.get("country"), input.get("name"), input.get("gender"));
         Thread.sleep(1000);
         ProductCatalog productCatalog = formPage.pressShopButton();
         productCatalog.addItemToCartByIndex(0);
